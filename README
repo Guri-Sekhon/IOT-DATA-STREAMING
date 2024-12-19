@@ -46,4 +46,9 @@ https://api.openweathermap.org/data/2.5/weather?appid=<YOUR_API_KEY>&q=toronto
 
 5: Replace API KEY in producer.py (Currently it working on my api key) and create your own docker image if you want to.
 
+6: Deploy k8s for producer/consumer docker image
+kubectl create -f deployment-prod.yml
+kubectl create -f deployment-consum.yml
+
+
 
