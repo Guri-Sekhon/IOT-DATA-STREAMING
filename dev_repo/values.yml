@@ -1,0 +1,74 @@
+# values.yml
+
+# General app settings
+app:
+  name: iot-data-streaming
+  image:
+    repository: guri-sekhon/iot-data-streaming
+    tag: latest
+  replicas: 1
+
+# Kafka producer settings
+producer:
+  enabled: true
+  image:
+    repository: guri-sekhon/kafka-producer
+    tag: latest
+  environment:
+    KAFKA_BROKER: "kafka:9092"  # Address of the Kafka broker
+    TOPIC: "iot-data"           # Topic to which the producer will send data
+    SEND_INTERVAL: 5            # Interval in seconds to send data
+
+# Kafka consumer settings
+consumer:
+  enabled: true
+  image:
+    repository: guri-sekhon/kafka-consumer
+    tag: latest
+  environment:
+    KAFKA_BROKER: "kafka:9092"  # Kafka broker address
+    TOPIC: "iot-data"           # Topic the consumer listens to
+    GROUP_ID: "iot-group"       # Consumer group ID
+    POLL_INTERVAL: 10           # Interval in seconds to poll Kafka for new messages
+
+# Kafka settings
+kafka:
+  enabled: true
+  replicas: 1
+  image:
+    repository: wurstmeister/kafka
+    tag: latest
+  environment:
+    KAFKA_ADVERTISED_LISTENER: "kafka:9092"  # Advertised Kafka listener address
+    KAFKA_LISTENER_SECURITY_PROTOCOL: PLAINTEXT
+    KAFKA_LISTENER_NAME: INPLAIN
+    KAFKA_LISTENER_PORT: 9092
+
+# Kubernetes settings
+kubernetes:
+  namespace: default
+  service:
+    producer:
+      port: 8081
+    consumer:
+      port: 8082
+  resources:
+    requests:
+      memory: "512Mi"
+      cpu: "500m"
+    limits:
+      memory: "1Gi"
+      cpu: "1"
+
+# Logging settings
+logging:
+  level: INFO
+  enable: true
+
+# Monitoring settings (if needed)
+monitoring:
+  enabled: true
+  prometheus:
+    enabled: true
+  grafana:
+    enabled: true
