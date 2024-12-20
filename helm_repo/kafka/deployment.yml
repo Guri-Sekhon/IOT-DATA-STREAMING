@@ -17,11 +17,11 @@ spec:
         image: wurstmeister/kafka:latest
         resources:
             requests:
-              memory: "64Mi"
-              cpu: "250m"
+              memory: "2Gi"
+              cpu: "1"
             limits:
-              memory: "128Mi"
-              cpu: "500m"
+              memory: "4Gi"
+              cpu: "2"
         env:
         - name: KAFKA_ADVERTISED_LISTENER
           value: "kafka:9092"
