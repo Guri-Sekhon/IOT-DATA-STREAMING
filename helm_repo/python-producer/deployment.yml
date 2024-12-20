@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: python-producer
-        image: guri-sekhon/kafka-producer:latest
+        image: gurisekhon/kafka-producer:latest
         resources:
             requests:
               memory: "64Mi"

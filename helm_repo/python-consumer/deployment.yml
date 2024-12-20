@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: python-consumer
-        image: guri-sekhon/kafka-consumer:latest
+        image: gurisekhon/kafka-consumer:latest
         resources:
             requests:
               memory: "64Mi"
