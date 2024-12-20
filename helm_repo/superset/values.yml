@@ -1,6 +1,6 @@
 superset:
   service:
-    name: superset
-    port: 8088
-    targetPort: 8088
-    protocol: TCP
+    name: superset  # Name of the service
+    port: 8088  # Port the service exposes
+    targetPort: 8088  # Target port on the container
+    protocol: TCP  # Protocol for the service

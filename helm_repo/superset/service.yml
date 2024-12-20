@@ -2,10 +2,13 @@ apiVersion: v1
 kind: Service
 metadata:
   name: superset
+  namespace: default
 spec:
   selector:
     app: superset
   ports:
-    - protocol: TCP
-      port: 8088
-      targetPort: 8088
+    - protocol: TCP  # Specify the protocol here
+      port: 8088  # Specify the port from values.yml
+      targetPort: 8088  # Specify the target port from values.yml
+  type: ClusterIP
+
