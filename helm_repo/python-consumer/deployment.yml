@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: python-consumer
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: python-consumer
+  template:
+    metadata:
+      labels:
+        app: python-consumer
+    spec:
+      containers:
+      - name: python-consumer
+        image: guri-sekhon/kafka-consumer:latest
+        resources:
+            requests:
+              memory: "64Mi"
+              cpu: "250m"
+            limits:
+              memory: "128Mi"
+              cpu: "500m"
+        env:
+        - name: KAFKA_BROKER
+          value: kafka:9092
+        - name: TOPIC
+          value: iot-data
+        - name: GROUP_ID
+          value: iot-group
+        ports:
+        - containerPort: 8081
