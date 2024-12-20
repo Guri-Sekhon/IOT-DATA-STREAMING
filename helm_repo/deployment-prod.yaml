@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: producer-pod
+spec:
+  containers:
+    - name: producer-container
+      image: guri-sekhon/producer-image:latest
+      resources:
+            requests:
+              memory: "64Mi"
+              cpu: "250m"
+            limits:
+              memory: "128Mi"
+              cpu: "500m"

@@ -1,0 +1,6 @@
+kafka:
+  service:
+    name: kafka
+    port: 9092
+    targetPort: 9092
+    protocol: TCP

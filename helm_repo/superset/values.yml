@@ -1,0 +1,6 @@
+superset:
+  service:
+    name: superset
+    port: 8088
+    targetPort: 8088
+    protocol: TCP

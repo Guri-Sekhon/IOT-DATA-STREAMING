@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: python-producer
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: python-producer
+  template:
+    metadata:
+      labels:
+        app: python-producer
+    spec:
+      containers:
+      - name: python-producer
+        image: guri-sekhon/kafka-producer:latest
+        resources:
+            requests:
+              memory: "64Mi"
+              cpu: "250m"
+            limits:
+              memory: "128Mi"
+              cpu: "500m"
+        env:
+        - name: KAFKA_BROKER
+          value: kafka:9092
+        - name: TOPIC
+          value: iot-data
+        - name: MESSAGE_INTERVAL
+          value: "5"
+        ports:
+        - containerPort: 8080

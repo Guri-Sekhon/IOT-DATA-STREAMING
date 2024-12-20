@@ -1,0 +1,6 @@
+iotHubHono:
+  service:
+    name: iot-hub-hono
+    port: 8083
+    targetPort: 8083
+    protocol: TCP
