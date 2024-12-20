@@ -5,4 +5,4 @@ metadata:
 spec:
   containers:
     - name: consumer-container
-      image: baljit747/consumer-image:latest
+      image: gurisekhon/consumer-image:latest

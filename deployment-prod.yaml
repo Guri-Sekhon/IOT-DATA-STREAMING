@@ -5,4 +5,4 @@ metadata:
 spec:
   containers:
     - name: producer-container
-      image: baljit747/producer-image:latest
+      image: gurisekhon/producer-image:latest

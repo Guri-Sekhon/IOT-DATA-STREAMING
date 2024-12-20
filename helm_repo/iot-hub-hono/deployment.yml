@@ -13,14 +13,17 @@ spec:
         app: iot-hub-hono
     spec:
       containers:
-      - name: hono
-        image: eclipse/mosquitto:latest  # Alternative image (e.g., MQTT broker)
-        resources:
-          requests:
-            memory: "64Mi"
-            cpu: "250m"
-          limits:
-            memory: "128Mi"
-            cpu: "500m"
-        ports:
-        - containerPort: 8083
+        - name: iot-hub-hono
+          image: eclipse/hono-service-auth:2.6.0  # Updated image
+          resources:
+            requests:
+              memory: "64Mi"
+              cpu: "250m"
+            limits:
+              memory: "128Mi"
+              cpu: "500m"
+          ports:
+            - containerPort: 8083
+          env:
+            - name: HONO_AUTH_SVC_PERMISSIONS_PATH
+              value: opt/hono/permissions.json"  # Placeholder for testing

@@ -5,7 +5,7 @@ metadata:
 spec:
   containers:
     - name: consumer-container
-      image: guri-sekhon/consumer-image:latest
+      image: gurisekhon/consumer-image:latest
       resources:
             requests:
               memory: "64Mi"

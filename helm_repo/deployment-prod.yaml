@@ -5,7 +5,7 @@ metadata:
 spec:
   containers:
     - name: producer-container
-      image: guri-sekhon/producer-image:latest
+      image: gurisekhon/producer-image:latest
       resources:
             requests:
               memory: "64Mi"
