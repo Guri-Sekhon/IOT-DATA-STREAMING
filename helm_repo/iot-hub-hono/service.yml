@@ -1,13 +1,12 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: iot-hub-hono
+  name: iot-hub-hono-service
 spec:
   selector:
-    app: iot-hub-hono
+    app: iot-hub-hono  # Match the label of the deployment
   ports:
     - protocol: TCP
-      port: 8083
-      targetPort: 8083
-
-
+      port: 8083       # Expose the port your container listens on (e.g., 8083 for HTTP or MQTT)
+      targetPort: 8083  # The port inside the container (this should match the container's listening port)
+  type: ClusterIP       # This is the default service type, exposes the service only within the cluster.

@@ -14,13 +14,13 @@ spec:
     spec:
       containers:
       - name: hono
-        image: eclipse/hono:latest
+        image: eclipse/mosquitto:latest  # Alternative image (e.g., MQTT broker)
         resources:
-            requests:
-              memory: "64Mi"
-              cpu: "250m"
-            limits:
-              memory: "128Mi"
-              cpu: "500m"
+          requests:
+            memory: "64Mi"
+            cpu: "250m"
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
         ports:
         - containerPort: 8083
