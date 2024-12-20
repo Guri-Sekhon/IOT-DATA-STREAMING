@@ -16,14 +16,14 @@ spec:
       - name: superset
         image: apache/superset:latest
         resources:
-            requests:
-              memory: "64Mi"
-              cpu: "250m"
-            limits:
-              memory: "128Mi"
-              cpu: "500m"
+          requests:
+            memory: "64Mi"  # Minimum amount of memory requested
+            cpu: "250m"     # Minimum amount of CPU requested
+          limits:
+            memory: "128Mi"  # Maximum amount of memory allowed
+            cpu: "500m"      # Maximum amount of CPU allowed
         env:
-        - name: SUPERSET_SECRET_KEY
-          value: "your-secret-key"
+        - name: SUPERSET_HOME
+          value: "/usr/local/lib/python3.8/site-packages/superset"
         ports:
         - containerPort: 8088
