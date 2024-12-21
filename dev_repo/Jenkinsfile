@@ -1,7 +1,7 @@
 pipeline {
     agent any
     environment {
-        DOCKER_REGISTRY = 'gcr.io/YOUR_PROJECT_ID'
+        DOCKER_REGISTRY = 'gcr.io/grand-brook-444615-f5'
         IMAGE_NAME = 'iot-data-streaming'
     }
     stages {
