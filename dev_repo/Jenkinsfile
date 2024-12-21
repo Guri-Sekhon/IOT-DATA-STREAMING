@@ -1,0 +1,65 @@
+pipeline {
+    agent any
+    environment {
+        DOCKER_REGISTRY = 'gcr.io/YOUR_PROJECT_ID'
+        IMAGE_NAME = 'iot-data-streaming'
+    }
+    stages {
+        stage('Checkout') {
+            steps {
+                git 'https://github.com/Guri-Sekhon/IOT-DATA-STREAMING.git'
+            }
+        }
+        stage('SonarQube Analysis') {
+            steps {
+                script {
+                    // Run SonarQube analysis
+                    sonarScanner(
+                        sonarQubeServer: 'SonarQube',
+                        analysisProperties: [
+                            'sonar.projectKey': 'IOT-DATA-STREAMING',
+                            'sonar.projectName': 'IOT Data Streaming'
+                        ]
+                    )
+                }
+            }
+        }
+        stage('Build Docker Image') {
+            steps {
+                script {
+                    // Build Docker image
+                    def buildNumber = "${env.BUILD_NUMBER}-${UUID.randomUUID().toString().take(6)}"
+                    sh "docker build -t $DOCKER_REGISTRY/$IMAGE_NAME:$buildNumber ."
+                }
+            }
+        }
+        stage('Trivy Scan') {
+            steps {
+                script {
+                    // Scan the Docker image using Trivy
+                    sh "trivy image $DOCKER_REGISTRY/$IMAGE_NAME:$buildNumber"
+                }
+            }
+        }
+        stage('Push Docker Image') {
+            steps {
+                script {
+                    // Push the Docker image to the registry
+                    sh "docker push $DOCKER_REGISTRY/$IMAGE_NAME:$buildNumber"
+                }
+            }
+        }
+        stage('Notify Slack') {
+            steps {
+                script {
+                    slackSend(channel: '#build-notifications', message: "Build completed: $DOCKER_REGISTRY/$IMAGE_NAME:$buildNumber")
+                }
+            }
+        }
+    }
+    post {
+        always {
+            cleanWs()
+        }
+    }
+}
