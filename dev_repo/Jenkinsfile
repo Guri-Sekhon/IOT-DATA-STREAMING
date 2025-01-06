@@ -3,6 +3,7 @@ pipeline {
     environment {
         DOCKER_REGISTRY = 'gcr.io/grand-brook-444615-f5'
         IMAGE_NAME = 'iot-data-streaming'
+        SLACK_CHANNEL = '#gurislackworkspace'
     }
     stages {
         stage('Checkout') {
@@ -14,52 +15,52 @@ pipeline {
             steps {
                 script {
                     // Run SonarQube analysis
-                    sonarScanner(
-                        sonarQubeServer: 'SonarQube',
-                        analysisProperties: [
-                            'sonar.projectKey': 'IOT-DATA-STREAMING',
-                            'sonar.projectName': 'IOT Data Streaming'
-                        ]
-                    )
+                    withSonarQubeEnv('SonarQube') {
+                        sh 'mvn clean install sonar:sonar'
+                    }
                 }
             }
         }
         stage('Build Docker Image') {
             steps {
                 script {
-                    // Build Docker image
                     def buildNumber = "${env.BUILD_NUMBER}-${UUID.randomUUID().toString().take(6)}"
-                    sh "docker build -t $DOCKER_REGISTRY/$IMAGE_NAME:$buildNumber ."
+                    env.FULL_IMAGE_NAME = "$DOCKER_REGISTRY/$IMAGE_NAME:$buildNumber"
+                    sh "docker build -t $FULL_IMAGE_NAME ."
                 }
             }
         }
         stage('Trivy Scan') {
             steps {
                 script {
-                    // Scan the Docker image using Trivy
-                    sh "trivy image $DOCKER_REGISTRY/$IMAGE_NAME:$buildNumber"
+                    sh "trivy image $FULL_IMAGE_NAME"
                 }
             }
         }
-        stage('Push Docker Image') {
+        stage('Push to GCR') {
             steps {
                 script {
-                    // Push the Docker image to the registry
-                    sh "docker push $DOCKER_REGISTRY/$IMAGE_NAME:$buildNumber"
+                    sh "gcloud auth configure-docker"
+                    sh "docker push $FULL_IMAGE_NAME"
                 }
             }
         }
-        stage('Notify Slack') {
+        stage('Notify Success') {
             steps {
-                script {
-                    slackSend(channel: '#build-notifications', message: "Build completed: $DOCKER_REGISTRY/$IMAGE_NAME:$buildNumber")
-                }
+                slackSend(channel: SLACK_CHANNEL, 
+                          message: "Build Successful! Image pushed to GCR: $FULL_IMAGE_NAME")
             }
         }
     }
     post {
+        failure {
+            slackSend(channel: SLACK_CHANNEL, 
+                      message: "Build Failed! Check Jenkins logs for details.")
+        }
         always {
-            cleanWs()
+            cleanWs() // Clean up workspace after the pipeline
         }
     }
 }
+
+
