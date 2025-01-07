@@ -8,7 +8,7 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                git 'https://github.com/Guri-Sekhon/IOT-DATA-STREAMING.git'
+                git credentialsId: 'github-pat', url: 'https://github.com/Guri-Sekhon/IOT-DATA-STREAMING.git'
             }
         }
         stage('Google Cloud Authentication') {
