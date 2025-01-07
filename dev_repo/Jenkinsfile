@@ -11,6 +11,16 @@ pipeline {
                 git 'https://github.com/Guri-Sekhon/IOT-DATA-STREAMING.git'
             }
         }
+        stage('Google Cloud Authentication') {
+            steps {
+                // Use the credentials stored in Jenkins for Google Cloud authentication
+                withCredentials([[$class: 'GoogleServiceAccountCredentialBinding', 
+                                  credentialsId: 'gurigooglesrvaccount']]) {
+                    sh 'gcloud auth activate-service-account --key-file=$GOOGLE_APPLICATION_CREDENTIALS'
+                    sh 'gcloud auth configure-docker'
+                }
+            }
+        }
         stage('SonarQube Analysis') {
             steps {
                 script {
@@ -45,7 +55,6 @@ pipeline {
         stage('Push to GCR') {
             steps {
                 script {
-                    sh "gcloud auth configure-docker"
                     sh "docker push $FULL_IMAGE_NAME"
                 }
             }
@@ -69,3 +78,4 @@ pipeline {
         }
     }
 }
+
