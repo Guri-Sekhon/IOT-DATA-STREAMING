@@ -15,7 +15,7 @@ pipeline {
             steps {
                 // Use the credentials stored in Jenkins for Google Cloud authentication
                 withCredentials([[$class: 'GoogleServiceAccountCredentialBinding', 
-                                  credentialsId: 'gurigooglesrvaccount']]) {
+                                  credentialsId: 'gurisrvacc']]) {
                     sh 'gcloud auth activate-service-account --key-file=$GOOGLE_APPLICATION_CREDENTIALS'
                     sh 'gcloud auth configure-docker'
                 }
