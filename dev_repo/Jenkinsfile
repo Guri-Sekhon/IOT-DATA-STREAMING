@@ -11,13 +11,6 @@ pipeline {
                 git 'https://github.com/Guri-Sekhon/IOT-DATA-STREAMING.git'
             }
         }
-        stage('Run Pipeline') {
-            steps {
-                script {
-                    load 'dev_repo/Jenkinsfile'
-                }
-            }
-        }
         stage('Google Cloud Authentication') {
             steps {
                 // Use the credentials stored in Jenkins for Google Cloud authentication
