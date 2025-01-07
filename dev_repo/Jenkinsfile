@@ -1,4 +1,4 @@
-pipeline {
+pipeline { 
     agent any
     environment {
         DOCKER_REGISTRY = 'gcr.io/grand-brook-444615-f5'
@@ -33,7 +33,12 @@ pipeline {
         stage('Trivy Scan') {
             steps {
                 script {
-                    sh "trivy image $FULL_IMAGE_NAME"
+                    // Run Trivy vulnerability scan
+                    sh """
+                    # Scan the Docker image
+                    trivy image $FULL_IMAGE_NAME > trivy-report.txt || true
+                    cat trivy-report.txt
+                    """
                 }
             }
         }
@@ -58,9 +63,9 @@ pipeline {
                       message: "Build Failed! Check Jenkins logs for details.")
         }
         always {
+            // Archive Trivy report and clean up
+            archiveArtifacts artifacts: 'trivy-report.txt', allowEmptyArchive: true
             cleanWs() // Clean up workspace after the pipeline
         }
     }
 }
-
-
